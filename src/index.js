@@ -90,6 +90,13 @@ export function fetchDedupe(input, init, dedupeOptions) {
 
   const request = fetch(input, initToUse).then(
     res => {
+      if (!res.ok) {
+        if (dedupe) {
+          resolveRequest({ requestKey: requestKeyToUse, res });
+        } else {
+          return res;
+        }
+      }
       let responseTypeToUse;
       if (responseType instanceof Function) {
         responseTypeToUse = responseType(res);
